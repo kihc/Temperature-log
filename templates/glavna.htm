@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blalalala</title>
+    <script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['bar', 'corechart', 'line', 'controls']}]}"></script>
+    <script type="text/javascript">
+
+
+
+
+        google.setOnLoadCallback(risiBarChartTemperatura);
+        google.setOnLoadCallback(risiPieChartVlaga);
+        google.setOnLoadCallback(risiTemperatura);
+
+        function risiTemperatura()
+        {
+            var json_temperatura = {{ json_temperatura }}
+            var data = new google.visualization.DataTable(json_temperatura);
+
+            var options = {
+                chart: {
+                    title: 'Average Temperatures and Daylight in Iceland Throughout the Year'
+                },
+                series: {
+                    // Gives each series an axis name that matches the Y-axis below.
+                    0: {axis: 'Temps'},
+                    1: {axis: 'Daylight'}
+                },
+                axes: {
+                    // Adds labels to each axis; they don't have to match the axis names.
+                    y: {
+                        Temps: {label: 'Temps (Celsius)'},
+                        Daylight: {label: 'Daylight'}
+                    }
+                },
+
+            };
+
+            var control = new google.visualization.ControlWrapper({
+                 'controlType': 'ChartRangeFilter',
+                 'containerId': 'temperatura_control',
+                 'options': {
+                   // Filter by the date axis.
+                   'filterColumnIndex': 0,
+                   'ui': {
+                     'chartType': 'Line',
+                     'chartOptions': {
+                       'chartArea': {'width': '85%'},
+                       'hAxis': {'baselineColor': 'none'}
+                     },
+                     // Display a single series that shows the closing value of the stock.
+                     // Thus, this view has two columns: the date (axis) and the stock value (line series).
+                     'chartView': {
+                       'columns': [0, 1]
+                     },
+                     // 1 day in milliseconds = 24 * 60 * 60 * 1000 = 86,400,000
+                     'minRangeSize': 86400000
+                   }
+                 },
+                 // Initial range: 2012-02-09 to 2012-03-20.
+                 'state': {'range': {'start': new Date(2012, 10, 1), 'end': new Date(2015, 4, 27)}}
+               });
+
+               var chart = new google.visualization.ChartWrapper({
+                 'chartType': 'Line',
+                 'containerId': 'temperatura',
+                 'options': {
+                     'chart': {
+                         'title': 'nekiiii'
+                     },
+                     'legend': {
+                         'position': 'top'
+                     },
+                     'series': {
+                          // Gives each series an axis name that matches the Y-axis below.
+                          0: {'axis': 'Temps'},
+                          1: {'axis': 'Daylight'}
+
+                     }
+                 }
+                });
+
+
+
+            var neki = new google.visualization.Dashboard(document.getElementById('temperatura'));
+            neki.bind(control, chart);
+            neki.draw(data);
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function risiVlaga()
+        {
+            // Create and populate the data table.
+            var json_vlaga = {{ json_vlaga }}
+            var data = new google.visualization.DataTable(json_vlaga);
+
+            // Create and draw the visualization.
+            var neki = new google.visualization.AnnotatedTimeLine(document.getElementById('vlaga'));
+            neki.draw(data, {'displayAnnotations': true});
+        }
+
+
+        function risiBarChartTemperatura()
+        {
+            var data = new google.visualization.arrayToDataTable([
+          ['', 'Temperatura'],
+          ['Zunaj', {{ temperatura_arso }}],
+          ['Znotraj', {{ temperatura }}],
+        ]);
+
+        var options = {
+          title: '',
+          width: 200,
+          legend: { position: 'none' },
+
+
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('urica_temperatura'));
+
+        chart.draw(data, options);
+
+        }
+
+        function risiPieChartVlaga()
+        {
+            var data = google.visualization.arrayToDataTable([
+          ['Effort', 'Amount given'],
+          ['', {{ vlaga }}],
+          ['', 100 - {{ vlaga }}],
+
+        ]);
+
+        var options = {
+            title: 'Vlaga',
+            pieHole: 0.5,
+            pieSliceText: 'none',
+            legend: 'none',
+            slices: {
+            1: {color: 'lightblue'}
+            }
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('urica_vlaga'));
+        chart.draw(data, options);
+
+
+
+        }
+
+
+
+    </script>
+    <style type="text/css">
+        .kontejner {
+            width: 80%;
+            height: 300px;
+            border: thin solid red;
+            margin: auto;
+        }
+        #urica_temperatura
+        {
+            display: inline-block;
+
+            margin: auto;
+        }
+        #urica_vlaga
+        {
+            display: inline-block;
+
+            margin: auto;
+        }
+
+
+    </style>
+
+</head>
+<body>
+
+<div style="text-align: center;">
+<div id="urica_temperatura">
+
+</div>
+<div id="urica_vlaga">
+
+</div>
+    </div>
+
+<br />
+<br />
+<br />
+
+<div id="temperatura" class="kontejner">
+
+</div>
+<div id="temperatura_control" style="width: 80%;height: 100px; margin: auto; border: thin solid red;">
+</div>
+
+<br />
+
+
+</body>
+</html>

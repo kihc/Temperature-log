@@ -1,0 +1,4 @@
+cron:
+- description: 30 min data fetch
+  url: /osvezi
+  schedule: every 30 minutes
